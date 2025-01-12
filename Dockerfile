@@ -8,5 +8,6 @@ RUN pip install 'poetry==1.1.13'
 
 # dev setup
 # example usage:
+# docker build -t electionguard-python-env .
 # docker run -it --mount type=bind,src=.,dst=/workspace electionguard-python-env bash
 WORKDIR /workspace
