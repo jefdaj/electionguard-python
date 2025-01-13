@@ -1,5 +1,20 @@
 ![Microsoft Defending Democracy Program: ElectionGuard Python][banner image]
 
+# Jeff dev env
+
+```
+nix-shell -p docker-compose gnumake python3
+
+# run the docker-related make commands here
+# for example:
+make start-db
+
+# run the rest in the makefile-env container
+# for example:
+./makefile-docker-env.sh
+make test
+```
+
 # 🗳 ElectionGuard Python
 
 [![ElectionGuard Specification 0.95.0](https://img.shields.io/badge/🗳%20ElectionGuard%20Specification-0.95.0-green)](https://www.electionguard.vote) ![Github Package Action](https://github.com/microsoft/electionguard-python/workflows/Release%20Build/badge.svg) [![](https://img.shields.io/pypi/v/electionguard)](https://pypi.org/project/electionguard/) [![](https://img.shields.io/pypi/dm/electionguard)](https://pypi.org/project/electionguard/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/microsoft/electionguard-python.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/microsoft/electionguard-python/context:python) [![Total alerts](https://img.shields.io/lgtm/alerts/g/microsoft/electionguard-python.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/microsoft/electionguard-python/alerts/) [![Documentation Status](https://readthedocs.org/projects/electionguard-python/badge/?version=latest)](https://electionguard-python.readthedocs.io) [![license](https://img.shields.io/github/license/microsoft/electionguard)](https://github.com/microsoft/electionguard-python/blob/main/LICENSE)
