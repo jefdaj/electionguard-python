@@ -2,17 +2,20 @@
 
 # Jeff dev env
 
-```
+```bash
+# run the docker-related make commands in a host nix-shell
+# for example:
 nix-shell -p docker-compose gnumake python3
-
-# run the docker-related make commands here
-# for example:
 make start-db
+```
 
-# run the rest in the makefile-env container
+```bash
+# run the rest in the electionguard-python-makefile-env container
 # for example:
+nix-shell -p docker-compose
 ./makefile-docker-env.sh
 make test
+make eg-e2e-simple-election
 ```
 
 # 🗳 ElectionGuard Python

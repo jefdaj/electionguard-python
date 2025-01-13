@@ -17,18 +17,19 @@ environment:
 	pip3 --version || python3 -m pip install -U pip
 	poetry --version | grep '1.1.13' || pip3 install 'poetry==1.1.13'
 	poetry config virtualenvs.in-project true 
-	poetry install
+	make install
 	@echo 🚨 Be sure to add poetry to PATH
 	make fetch-sample-data
 
 install:
 	@echo 🔧 INSTALL
-	poetry install
+	# TODO is this really necessary to get around network errors?
+	for n in {1..3}; do poetry install && break || sleep 3; done
 
 build:
 	@echo 🔨 BUILD
 	poetry build
-	poetry install 
+	make install 
 
 openssl-fix:
 	export LDFLAGS=-L/usr/local/opt/openssl/lib
