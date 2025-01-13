@@ -10,7 +10,9 @@ RUN apt update && apt-get install -y \
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-RUN pip install 'poetry==1.1.13'
+# upgraded to fix missing hashes bug
+# https://stackoverflow.com/a/73388529
+RUN pip install 'poetry==1.1.14'
 
 ENV POETRY_REQUESTS_MAX_RETRIES=25
 
