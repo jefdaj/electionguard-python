@@ -12,4 +12,5 @@ docker build -t $image_name .
 
 docker run -it \
   --mount type=bind,src=.,dst=/electionguard-python \
+  --mount type=bind,src=./data,dst=/data \
   $image_name bash

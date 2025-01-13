@@ -8,6 +8,7 @@ __pycache__/
 
 data/0.95.0/
 data/1.0/
+data/out/
 
 # Distribution / packaging
 .Python
