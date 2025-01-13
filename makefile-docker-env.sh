@@ -6,7 +6,7 @@
 # 2. in the container, use `make` commands as described in the README
 #    (except targets using docker compose; those run outside)
 
-image_name=electionguard-python-make-env
+image_name=electionguard-python-makefile-docker-env
 
 docker build -t $image_name .
 
