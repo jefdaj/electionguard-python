@@ -7,7 +7,7 @@ PKG_MGR ?= $(shell python3 -c 'import subprocess as sub; print(next(filter(None,
 endif
 SAMPLE_BALLOT_COUNT ?= 5
 SAMPLE_BALLOT_SPOIL_RATE ?= 50
-POETRY_REQUESTS_MAX_RETRIES=5
+POETRY_REQUESTS_MAX_RETRIES=25
 
 all: environment install build validate auto-lint coverage
 

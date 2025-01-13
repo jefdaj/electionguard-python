@@ -5,5 +5,5 @@ RUN apt update && apt-get install -y \
     libmpc-dev \
     graphviz
 RUN pip install 'poetry==1.1.13'
-ENV POETRY_REQUESTS_MAX_RETRIES=5
+ENV POETRY_REQUESTS_MAX_RETRIES=25
 WORKDIR /electionguard-python
