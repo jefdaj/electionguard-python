@@ -5,11 +5,10 @@
 # 1. run this to spin up a dev container
 # 2. in the container, use `make` commands as described in the README
 
-image_name=electionguard-python-env
+image_name=electionguard-python-make-env
 
 docker build -t $image_name .
 
 docker run -it \
-  --mount type=bind,src=.,dst=/workspace \
-  --mount type=bind,src=./.cache,dst=/root/.cache \
+  --mount type=bind,src=.,dst=/electionguard-python \
   $image_name bash

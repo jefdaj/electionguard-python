@@ -7,14 +7,15 @@ PKG_MGR ?= $(shell python3 -c 'import subprocess as sub; print(next(filter(None,
 endif
 SAMPLE_BALLOT_COUNT ?= 5
 SAMPLE_BALLOT_SPOIL_RATE ?= 50
+POETRY_REQUESTS_MAX_RETRIES=5
 
 all: environment install build validate auto-lint coverage
 
 environment:
 	@echo 🔧 ENVIRONMENT SETUP
 	make install-gmp
-	python3 -m pip install -U pip
-	pip3 install 'poetry==1.1.13'
+	pip3 --version || python3 -m pip install -U pip
+	poetry --version | grep '1.1.13' || pip3 install 'poetry==1.1.13'
 	poetry config virtualenvs.in-project true 
 	poetry install
 	@echo 🚨 Be sure to add poetry to PATH
@@ -52,9 +53,10 @@ install-gmp-mac:
 install-gmp-linux:
 	@echo 🐧 LINUX INSTALL
 ifeq ($(PKG_MGR), apt-get)
-	sudo apt-get install libgmp-dev
-	sudo apt-get install libmpfr-dev
-	sudo apt-get install libmpc-dev
+	# only install if needed
+	ldconfig -p | grep libgmp  || sudo apt-get install libgmp-dev
+	ldconfig -p | grep libmpfr || sudo apt-get install libmpfr-dev
+	ldconfig -p | grep libmpc  || sudo apt-get install libmpc-dev
 else ifeq ($(PKG_MGR), pacman)
 	sudo pacman -S gmp
 else ifeq ($(PKG_MGR), undefined)
@@ -183,7 +185,8 @@ ifeq ($(OS), Windows)
 	choco install wget
 	choco install unzip
 endif
-	wget -O sample-data.zip https://github.com/microsoft/electionguard/releases/download/v1.0/sample-data.zip
+	# only download if needed
+	test -f sample-data.zip || wget -O sample-data.zip https://github.com/microsoft/electionguard/releases/download/v1.0/sample-data.zip
 	unzip -o sample-data.zip
 
 generate-sample-data:
