@@ -4,7 +4,8 @@ RUN apt update && apt-get install -y \
     libgmp-dev \
     libmpfr-dev \
     libmpc-dev \
-    graphviz
+    graphviz \
+    jq
 
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
