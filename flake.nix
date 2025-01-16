@@ -61,6 +61,11 @@
         # Implement build fixups here.
         # Note that uv2nix is _not_ using Nixpkgs buildPythonPackage.
         # It's using https://pyproject-nix.github.io/pyproject.nix/build.html
+
+        "bottle-websocket" = _prev."bottle-websocket".overrideAttrs(old: {
+          buildInputs = (old.buildInputs or []) ++ [ _prev.setuptools ];
+        });
+
       };
 
       # This example is only using x86_64-linux
