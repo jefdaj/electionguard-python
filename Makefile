@@ -154,9 +154,10 @@ bench:
 	poetry run python3 -s tests/bench/bench_chaum_pedersen.py
 
 # Documentation
-install-mkdocs:
-	pip install mkdocs
-	pip install mkdocs-jupyter
+# TODO fix nix and put back?
+# install-mkdocs:
+#	pip install mkdocs
+#	pip install mkdocs-jupyter
 
 docs-serve:
 	poetry run mkdocs serve
