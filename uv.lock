@@ -589,6 +589,7 @@ name = "electionguard"
 version = "1.4.0"
 source = { virtual = "." }
 dependencies = [
+    { name = "bottle-websocket" },
     { name = "click" },
     { name = "dacite" },
     { name = "dependency-injector" },
@@ -630,6 +631,7 @@ dev = [
 requires-dist = [
     { name = "atomicwrites", marker = "extra == 'dev'" },
     { name = "black", marker = "extra == 'dev'", specifier = "==22.3.0" },
+    { name = "bottle-websocket", specifier = ">=0.2.9" },
     { name = "click", specifier = ">=8.1.0,<9.0.0" },
     { name = "coverage", marker = "extra == 'dev'" },
     { name = "dacite", specifier = ">=1.6.0,<2.0.0" },
@@ -904,7 +906,7 @@ name = "importlib-metadata"
 version = "8.5.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "zipp" },
+    { name = "zipp", marker = "python_full_version < '3.12'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/cd/12/33e59336dca5be0c398a7482335911a33aa0e20776128f038019f1a95f1b/importlib_metadata-8.5.0.tar.gz", hash = "sha256:71522656f0abace1d072b9e5481a48f07c138e00f079c38c8f883823f9c26bd7", size = 55304 }
 wheels = [
