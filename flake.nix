@@ -62,6 +62,10 @@
         # Note that uv2nix is _not_ using Nixpkgs buildPythonPackage.
         # It's using https://pyproject-nix.github.io/pyproject.nix/build.html
 
+        "atomicwrites" = _prev."atomicwrites".overrideAttrs(old: {
+          buildInputs = (old.buildInputs or []) ++ [ _prev.setuptools ];
+        });
+
         "bottle-websocket" = _prev."bottle-websocket".overrideAttrs(old: {
           buildInputs = (old.buildInputs or []) ++ [ _prev.setuptools ];
         });
@@ -69,6 +73,14 @@
         "eel" = _prev."eel".overrideAttrs(old: {
           buildInputs = (old.buildInputs or []) ++ [ _prev.setuptools ];
         });
+
+        "mypy-extensions" = _prev."mypy-extensions".overrideAttrs(old: {
+          buildInputs = (old.buildInputs or []) ++ [ _prev.setuptools ];
+        });
+
+        # "mkdocs-jupyter" = _prev."mkdocs-jupyter".overrideAttrs(old: {
+        #   buildInputs = (old.buildInputs or []) ++ [ _prev.poetry ];
+        # });
 
       };
 
