@@ -3,8 +3,16 @@
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    # last commit to pyproject.toml was Aug 2022, so this seems like a good starting point:
-    nixpkgs.url = "github:NixOS/nixpkgs/release-22.05";
+
+    # which nixpkgs to use?
+    # release-22.05? nope, too old for poetry2nix
+    # release-22.11? nope
+    # release-23.11? nope
+    # release-24.11? maybe...
+    # TODO 24.05 might be good, because poetry2nix was being maintained more then
+    # TODO could also separate the main nixpkgs from the poetry2nix one below
+    nixpkgs.url = "github:NixOS/nixpkgs/release-24.11";
+
     poetry2nix = {
       url = "github:nix-community/poetry2nix";
       inputs.nixpkgs.follows = "nixpkgs";
