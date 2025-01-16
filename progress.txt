@@ -1,0 +1,5 @@
+got nix develop .#uv2nix to run
+uv build runs within that
+uv run pytest has a bunch of errors
+i think uv tests are set up pretty differently
+maybe time to try poetry2nix for now? since this project will stay with old dependencies anyway for now
