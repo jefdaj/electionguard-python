@@ -41,17 +41,33 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1737057135,
-        "narHash": "sha256-lfuk5I5XMfjXD+ptUGcWMGcuusgvZD1v3UdoibHiFrc=",
+        "lastModified": 1720535198,
+        "narHash": "sha256-zwVvxrdIzralnSbcpghA92tWu2DV2lwv89xZc8MTrbg=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "2dbbd6ad6bc67792183d743405b29ab4c04ce578",
+        "rev": "205fd4226592cc83fd4c0885a3e4c9c400efabb5",
         "type": "github"
       },
       "original": {
         "owner": "NixOS",
-        "ref": "release-24.11",
+        "ref": "release-23.11",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
+        "lastModified": 1730157240,
+        "narHash": "sha256-P8wF4ag6Srmpb/gwskYpnIsnspbjZlRvu47iN527ABQ=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "75e28c029ef2605f9841e0baa335d70065fe7ae2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "75e28c029ef2605f9841e0baa335d70065fe7ae2",
         "type": "github"
       }
     },
@@ -61,9 +77,7 @@
           "flake-utils"
         ],
         "nix-github-actions": "nix-github-actions",
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": "nixpkgs_2",
         "systems": "systems_2",
         "treefmt-nix": "treefmt-nix"
       },

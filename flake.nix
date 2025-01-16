@@ -9,13 +9,13 @@
     # release-22.11? nope
     # release-23.11? nope
     # release-24.11? maybe...
-    # TODO 24.05 might be good, because poetry2nix was being maintained more then
+    # release-24.05? 
     # TODO could also separate the main nixpkgs from the poetry2nix one below
-    nixpkgs.url = "github:NixOS/nixpkgs/release-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-23.11";
 
     poetry2nix = {
       url = "github:nix-community/poetry2nix";
-      inputs.nixpkgs.follows = "nixpkgs";
+      # inputs.nixpkgs.follows = "nixpkgs";
       inputs.flake-utils.follows = "flake-utils";
     };
   };
@@ -44,9 +44,13 @@
 
           overrides = poetry2nix.defaultPoetryOverrides.extend (final: super: {
 
-            # "bottle-websocket" = super."bottle-websocket".overridePythonAttrs (old: {
-            #   buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
-            # });
+            "bottle" = super."bottle".overridePythonAttrs (old: {
+              buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
+            });
+
+            "bottle-websocket" = super."bottle-websocket".overridePythonAttrs (old: {
+              buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
+            });
 
             # "gmpy" = super."gmpy".overridePythonAttrs (old: {
             #   nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ gmp4 ];
