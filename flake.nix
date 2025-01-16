@@ -66,6 +66,10 @@
           buildInputs = (old.buildInputs or []) ++ [ _prev.setuptools ];
         });
 
+        "eel" = _prev."eel".overrideAttrs(old: {
+          buildInputs = (old.buildInputs or []) ++ [ _prev.setuptools ];
+        });
+
       };
 
       # This example is only using x86_64-linux
