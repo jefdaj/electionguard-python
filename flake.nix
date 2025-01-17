@@ -10,7 +10,7 @@
     # release-23.11? nope
     # release-24.11? maybe...
     # release-24.05? 
-    nixpkgs.url = "github:NixOS/nixpkgs/release-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-24.05";
 
     poetry2nix = {
       url = "github:nix-community/poetry2nix";
@@ -26,7 +26,7 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         # see https://github.com/nix-community/poetry2nix/tree/master#api for more functions and examples.
-        electionguard = { poetry2nix, lib, gmp }: poetry2nix.mkPoetryApplication {
+        electionguard = { poetry2nix, lib }: poetry2nix.mkPoetryApplication {
 
           # TODO does this help?
           python = pkgs.python39;
@@ -52,7 +52,7 @@
           # );
 
           # TODO do these help?
-          overrides = poetry2nix.defaultPoetryOverrides.extend (final: super: {
+          overrides = poetry2nix.overrides.withDefaults (final: super: {
 
             # "bottle" = super."bottle".overridePythonAttrs (old: {
             #   buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
@@ -67,9 +67,16 @@
             });
 
             "hatchling" = super."hatchling".overridePythonAttrs (old: {
+              buildInputs = (old.buildInputs or [ ]) ++ [ super.pathspec ];
+            });
+
+            "mkinit" = super."mkinit".overridePythonAttrs (old: {
+              buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
+            });
+
+            "pathspec" = super."pathspec".overridePythonAttrs (old: {
               # TODO work on this
-              # buildInputs = (old.buildInputs or [ ]) ++ [ super.pathspec ];
-              # nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ super.pathspec ];
+              buildInputs = (old.buildInputs or [ ]) ++ [ super.setuptools ];
             });
 
           });
