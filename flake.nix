@@ -63,7 +63,7 @@
             # });
 
             "gmpy2" = super."gmpy2".overridePythonAttrs (old: {
-              buildInputs = old.buildInputs or [ ] ++ [ pkgs.gmp.dev pkgs.mpfr.dev pkgs.mpc ];
+              buildInputs = old.buildInputs or [ ] ++ [ pkgs.gmp.dev pkgs.mpfr.dev pkgs.libmpc ];
             });
 
           });
