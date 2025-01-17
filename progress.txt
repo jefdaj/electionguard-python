@@ -1,0 +1,35 @@
+NIXPKGS_ALLOW_INSECURE=1 nix develop  --impure
+error: builder for '/nix/store/qycw7snw5zc9dm8hd1wxc3w2xmz65xcs-python3.9-hatchling-1.25.0.drv' failed with exit code 1;
+       last 25 log lines:
+       > Using pypaBuildPhase
+       > Sourcing python-runtime-deps-check-hook
+       > Using pythonRuntimeDepsCheckHook
+       > Sourcing pypa-install-hook
+       > Using pypaInstallPhase
+       > Sourcing python-imports-check-hook.sh
+       > Using pythonImportsCheckPhase
+       > Sourcing python-namespaces-hook
+       > Sourcing python-catch-conflicts-hook.sh
+       > Running phase: unpackPhase
+       > unpacking source archive /nix/store/cxmm3sfp3n2aac8xjxphhh04qzc425x2-hatchling-1.25.0.tar.gz
+       > source root is hatchling-1.25.0
+       > setting SOURCE_DATE_EPOCH to timestamp 1580601600 of file hatchling-1.25.0/tests/downstream/requirements.txt
+       > Running phase: patchPhase
+       > Running phase: updateAutotoolsGnuConfigScriptsPhase
+       > Running phase: configurePhase
+       > no configure script, doing nothing
+       > Running phase: buildPhase
+       > Executing pypaBuildPhase
+       > Creating a wheel...
+       > pypa build flags: --no-isolation --outdir dist/ --wheel
+       > * Getting build dependencies for wheel...
+       >
+       > ERROR Missing dependencies:
+       >        pathspec>=0.10.1
+       For full logs, run 'nix log /nix/store/qycw7snw5zc9dm8hd1wxc3w2xmz65xcs-python3.9-hatchling-1.25.0.drv'.
+error: 1 dependencies of derivation '/nix/store/6falyy4rqpzfqwwhlamkdll9ddjcp743-python3.9-ipykernel-6.12.1.drv' failed to build
+error (ignored): error: cannot unlink '"/tmp/nix-build-python3.9-requests-toolbelt-0.9.1.drv-0/build/requests-toolbelt-0.9.1/build"': Directory not empty
+error: 1 dependencies of derivation '/nix/store/clwwsk50y3yjfn37783dzcbmd0f9yz7r-python3.9-platformdirs-2.5.1.drv' failed to build
+error: 1 dependencies of derivation '/nix/store/0kjs81v9rwpvcjs9v8ha1sqhr6ilq8ah-nix-shell-env.drv' failed to build
+
+TODO why isn't adding pathspec to the override solving this?
