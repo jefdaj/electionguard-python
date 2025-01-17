@@ -63,7 +63,13 @@
             # });
 
             "gmpy2" = super."gmpy2".overridePythonAttrs (old: {
-              buildInputs = old.buildInputs or [ ] ++ [ pkgs.gmp.dev pkgs.mpfr.dev pkgs.libmpc ];
+              buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.gmp.dev pkgs.mpfr.dev pkgs.libmpc ];
+            });
+
+            "hatchling" = super."hatchling".overridePythonAttrs (old: {
+              # TODO work on this
+              # buildInputs = (old.buildInputs or [ ]) ++ [ super.pathspec ];
+              # nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ super.pathspec ];
             });
 
           });
