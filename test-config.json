@@ -1,0 +1,6 @@
+{
+  "nGuardians": 3,
+  "nMediators": 2,
+  "guardianStartPort": 8100,
+  "mediatorStartPort": 8200
+}
