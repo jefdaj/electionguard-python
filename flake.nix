@@ -8,12 +8,17 @@
   outputs = { self, nixpkgs, ... }: {
 
     pkgs = nixpkgs.legacyPackages.x86_64-linux;
-    # # alternative:
-    # pkgs = import nixpkgs { config = { }; overlays = [ ]; system = "x86_64-linux"; };
 
-    packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
+    # packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
+    # defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;
 
-    defaultPackage.x86_64-linux = self.packages.x86_64-linux.hello;
+    devShells.x86_64-linux.default = self.pkgs.mkShell {
+      buildInputs = with self.pkgs; [
+        arion
+        docker
+        docker-compose
+      ];
+    };
 
   };
 }
