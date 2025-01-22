@@ -5,7 +5,7 @@ let
 
   mkApiVm = mode: port:
   {
-    service.image = "electionguard/electionguard-web-api:latest";
+    service.image = "electionguard/electionguard-web-api:1.0.4"; # latest
     service.environment.API_MODE = mode;
     service.environment.PORT = port;
     service.ports  = [
