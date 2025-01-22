@@ -1,20 +1,26 @@
 { pkgs, ...}:
 
 let
-  # common JSON config file for nix + haskell code
-  # TODO is this the best way to do it?
   testConfig = builtins.fromJSON (builtins.readFile ./test-config.json);
 
-  mkApiVm = mode: port: {
+  mkApiVm = mode: n:
+  let
+    hostApiPort = (if mode == "guardian" then 8100 else 8200) + n;
+  in {
 
     service.image = "electionguard/electionguard-web-api:latest";
 
     service.environment.API_MODE = mode;
 
-    # TODO are ports 80 and 8100 actually exposed, or only to the host system? how to close them?
-    service.environment.PORT = port;
-    # service.expose = []; # [ ( builtins.toString port) ];
-    service.ports  = [ ((builtins.toString port) + ":" + (builtins.toString port)) ];
+    service.environment.PORT = hostApiPort;
+    service.ports  = [
+      # host:container
+      (builtins.toString hostApiPort + ":" + builtins.toString hostApiPort)
+    ];
+
+    # this would expose them to other computers?
+    # service.expose = [ ( builtins.toString hostApiPort) ];
+    # service.expose = [];
 
     # service.volumes = [ "${toString ./.}/postgres-data:/var/lib/postgresql/data" ];
 
@@ -23,7 +29,7 @@ let
   # make one vm entry, suitable for merging into the main services attrset
   mkApiVmAttrs = mode: startPort: n: {
     name = mode + builtins.toString n;
-    value = mkApiVm mode (startPort + n);
+    value = mkApiVm mode n;
   };
 
   # make a list of vm entries with the same mode, suitable for merging into the main services attrset
