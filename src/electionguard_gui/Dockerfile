@@ -33,15 +33,15 @@ RUN echo $PATH
 # Install python
 ##################################################################################
 
-RUN pyenv install 3.9.9 && \
-    pyenv global 3.9.9
+RUN pyenv install 3.9.21 && \
+    pyenv global 3.9.21
 
 ##################################################################################
 # Install EG prerequisites
 ##################################################################################
 
 RUN apt-get install -y libgmp-dev libmpfr-dev libmpc-dev
-RUN pip install 'poetry==1.1.13'
+RUN pip install 'poetry==1.1.14'
 
 ##################################################################################
 # Poetry Install
