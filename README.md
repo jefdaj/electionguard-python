@@ -5,7 +5,7 @@ This is my fork for use in [the Cardano integration](https://github.com/jefdaj/e
 Main changes so far:
 
 - Fixed a `poetry.lock` bug
-- Nix development setup
+- Cleaner Docker/Nix dev setup
 
 ## Build and test
 
