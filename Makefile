@@ -8,6 +8,7 @@ endif
 SAMPLE_BALLOT_COUNT ?= 5
 SAMPLE_BALLOT_SPOIL_RATE ?= 50
 POETRY_REQUESTS_MAX_RETRIES=25
+PYTHONDONTWRITEBYTECODE=True
 
 all: environment install build validate auto-lint coverage
 

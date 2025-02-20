@@ -1,11 +1,9 @@
 FROM python:3.9-bullseye AS base
 
 RUN apt update && apt-get install -y \
-    libgmp-dev \
-    libmpfr-dev \
-    libmpc-dev \
-    graphviz \
-    jq
+    libgmp-dev libmpfr-dev libmpc-dev \
+    graphviz jq \
+    wget zip unzip
 
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
@@ -14,7 +12,7 @@ RUN apt-get clean && \
 # https://stackoverflow.com/a/73388529
 RUN pip install 'poetry==1.1.14'
 
-ENV POETRY_REQUESTS_MAX_RETRIES=25
-
-RUN mkdir /repo
+COPY ./ /repo
 WORKDIR /repo
+
+ENV PYTHONDONTWRITEBYTECODE=True

@@ -7,20 +7,32 @@ Main changes so far:
 - Fixed a `poetry.lock` bug
 - Nix development setup
 
-## Nix development setup
+## Build and test
 
 ```bash
-# run the docker-related make commands in a host nix-shell
+./docker-build.sh
+./docker-test.sh
+```
+
+## Hack
+
+Substitute your system package manager for Nix here if you want.
+
+```bash
+# run the docker compose make commands in a host nix-shell
 # for example:
 nix-shell -p docker-compose gnumake python3
 make start-db
 ```
 
 ```bash
-# run the rest in the electionguard-python-makefile-env container
+# run the other make commands in the electionguard-python container
 # for example:
 nix-shell -p docker-compose
-./makefile-docker-env.sh
+./docker-shell.sh
 make test
 make eg-e2e-simple-election
 ```
+
+The Docker shell bind mounts the source code + data dirs,
+so you can edit from the host system and work with sample files easily.
