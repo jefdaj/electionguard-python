@@ -1,9 +1,9 @@
-FROM python:3.9-bullseye AS base
+FROM python:3.9-slim-bullseye AS base
 
 RUN apt update && apt-get install -y \
     libgmp-dev libmpfr-dev libmpc-dev \
     graphviz jq \
-    wget zip unzip
+    wget zip unzip make
 
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
