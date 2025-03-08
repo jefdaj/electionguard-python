@@ -1,7 +1,8 @@
-FROM python:3.9-slim-bullseye AS base
+# upgraded to allow pygraphviz in verifier script
+FROM python:3.10-slim-bullseye AS base
 
 RUN apt update && apt-get install -y \
-    libgmp-dev libmpfr-dev libmpc-dev \
+    gcc libgmp-dev libmpfr-dev libmpc-dev \
     graphviz jq \
     wget zip unzip make
 

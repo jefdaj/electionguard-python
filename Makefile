@@ -25,6 +25,7 @@ environment:
 install:
 	@echo 🔧 INSTALL
 	# TODO is this really necessary to get around network errors?
+	poetry lock --no-update
 	for n in {1..3}; do poetry install && break || sleep 3; done
 
 build:
