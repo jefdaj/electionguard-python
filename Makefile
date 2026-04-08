@@ -14,7 +14,7 @@ environment:
 	@echo 🔧 ENVIRONMENT SETUP
 	make install-gmp
 	python3 -m pip install -U pip
-	pip3 install 'poetry==1.1.13'
+	pip3 install 'poetry==1.8.3'
 	poetry config virtualenvs.in-project true 
 	poetry install
 	@echo 🚨 Be sure to add poetry to PATH
@@ -52,6 +52,7 @@ install-gmp-mac:
 install-gmp-linux:
 	@echo 🐧 LINUX INSTALL
 ifeq ($(PKG_MGR), apt-get)
+	sudo apt-get update
 	sudo apt-get install libgmp-dev
 	sudo apt-get install libmpfr-dev
 	sudo apt-get install libmpc-dev
