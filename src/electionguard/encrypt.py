@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from dataclasses import dataclass, field
 from typing import Dict, List, Optional, Type, TypeVar
 from uuid import getnode
@@ -86,12 +86,11 @@ class EncryptionDevice:
             self.device_id, self.session_id, self.launch_code, self.location
         )
 
-    # pylint: disable=no-self-use
     def get_timestamp(self) -> int:
         """
         Get the current timestamp in utc
         """
-        return int(datetime.utcnow().timestamp())
+        return int(datetime.now(timezone.utc).timestamp())
 
 
 class EncryptionMediator:

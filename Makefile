@@ -14,25 +14,24 @@ environment:
 	@echo 🔧 ENVIRONMENT SETUP
 	make install-gmp
 	python3 -m pip install -U pip
-	pip3 install 'poetry==1.8.3'
+	pip3 install 'poetry==2.2.1'
 	poetry config virtualenvs.in-project true 
-	poetry config installer.modern-installation false
 	printf "Cython<3\n" > /tmp/pip-constraints.txt
 	PIP_CONSTRAINT=/tmp/pip-constraints.txt poetry install
-	poetry run pip install 'setuptools<81'
+	poetry run pip install 'setuptools<83'
 	@echo 🚨 Be sure to add poetry to PATH
 	make fetch-sample-data
 
 install:
 	@echo 🔧 INSTALL
 	poetry install
-	poetry run pip install 'setuptools<81'
+	poetry run pip install 'setuptools<83'
 
 build:
 	@echo 🔨 BUILD
 	poetry build
 	poetry install 
-	poetry run pip install 'setuptools<81'
+	poetry run pip install 'setuptools<83'
 
 openssl-fix:
 	export LDFLAGS=-L/usr/local/opt/openssl/lib

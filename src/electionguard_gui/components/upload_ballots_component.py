@@ -1,7 +1,7 @@
 import os
 from typing import Any
-from datetime import datetime
-import eel
+from datetime import datetime, timezone
+import eel  # type: ignore[import-untyped]
 from electionguard.encrypt import EncryptionDevice
 from electionguard.serialize import from_file, from_raw
 from electionguard.ballot import SubmittedBallot
@@ -44,7 +44,7 @@ class UploadBallotsComponent(ComponentBase):
             election = self._election_service.get(db, election_id)
             if election is None:
                 return eel_fail(f"Election {election_id} not found")
-            created_at = datetime.utcnow()
+            created_at = datetime.now(timezone.utc)
             ballot_upload_id = self._ballot_upload_service.create(
                 db,
                 election_id,
@@ -113,7 +113,6 @@ class UploadBallotsComponent(ComponentBase):
         except Exception as e:
             return self.handle_error(e)
 
-    # pylint: disable=no-self-use
     def is_wizard_supported(self) -> bool:
         on_windows = os.name == "nt"
         return on_windows
@@ -224,4 +223,4 @@ class UploadBallotsComponent(ComponentBase):
 
 def update_upload_status(status: str) -> None:
     # pylint: disable=no-member
-    eel.update_upload_status(status)
+    eel.update_upload_status(status)  # type: ignore[attr-defined]
