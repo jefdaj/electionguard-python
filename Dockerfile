@@ -1,4 +1,4 @@
-FROM python:3.13-slim-trixie AS base
+FROM python:3.13-slim-bullseye AS base
 
 RUN apt update && apt-get install -y \
     libgmp-dev libmpfr-dev libmpc-dev \
