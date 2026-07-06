@@ -158,3 +158,6 @@ results/
 gui_private_keys/
 database/
 egui_mnt/
+
+# Nix files
+result
