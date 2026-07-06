@@ -72,37 +72,32 @@
           ]);
     in
     rec {
-      # packages.${system}.default =
-      #   pythonSet.mkVirtualEnv "electionguard-env" workspace.deps.default;
-
-      packages.${system}.default = pythonSet.electionguard;
-
-      packages.checks-e2e = pkgs.runCommand "electionguard-e2e-check"
-	{ nativeBuildInputs = [ packages.${system}.default ]; }
-	''
-          mkdir -p $out
-	  eg e2e \
-	    --guardian-count=2 --quorum=2 \
-	    --manifest=${./data/election_manifest_simple.json} \
-	    --ballots=${./data/plaintext_ballots_simple.json} \
-	    --spoil-id=25a7111b-4334-425a-87c1-f7a49f42b3a2 \
-	    --output-record=$out/election_record.zip
-	'';
-
-      packages.checks-setup = pkgs.runCommand "electionguard-setup-check"
-	{ nativeBuildInputs = [ packages.${system}.default ]; }
-	''
-          mkdir -p $out
-	  eg setup \
-	    --guardian-count=2 --quorum=2 \
-	    --manifest=${./data/election_manifest_simple.json} \
-	    --package-dir=$out/public_encryption_package \
-	    --keys-dir=$out/test_data_private_guardian_data
-	'';
+      packages.${system}.default =
+        pythonSet.mkVirtualEnv "electionguard-env" workspace.deps.default;
 
       checks.${system} = {
-	e2e = packages.${system}.checks-e2e;
-	setup = packages.${system}.checks-setup;
+        e2e-simple-election = pkgs.runCommand "electionguard-e2e-simple-election-check"
+          { nativeBuildInputs = [ packages.${system}.default ]; }
+          ''
+            mkdir -p $out
+            eg e2e \
+              --guardian-count=2 --quorum=2 \
+              --manifest=${./data/election_manifest_simple.json} \
+              --ballots=${./data/plaintext_ballots_simple.json} \
+              --spoil-id=25a7111b-4334-425a-87c1-f7a49f42b3a2 \
+              --output-record=$out/election_record.zip
+          '';
+
+        e2e-setup = pkgs.runCommand "electionguard-e2e-setup-check"
+          { nativeBuildInputs = [ packages.${system}.default ]; }
+          ''
+            mkdir -p $out
+            eg setup \
+              --guardian-count=2 --quorum=2 \
+              --manifest=${./data/election_manifest_simple.json} \
+              --package-dir=$out/public_encryption_package \
+              --keys-dir=$out/test_data_private_guardian_data
+          '';
       };
 
       # dev shell with editable install
@@ -121,7 +116,6 @@
             jq
             unzip
             uv
-            wget
             zip
 
             venv
