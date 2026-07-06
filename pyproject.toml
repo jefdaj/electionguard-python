@@ -71,7 +71,7 @@ dev = [
 ]
 
 [tool.uv]
-default-groups = "all"
+default-groups = ["dev"]
 
 [tool.hatch.build.targets.sdist]
 include = [
