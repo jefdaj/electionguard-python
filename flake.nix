@@ -72,11 +72,10 @@
           ]);
     in
     rec {
-      packages.${system}.default =
-        pythonSet.mkVirtualEnv "electionguard-env" workspace.deps.default;
+      # packages.${system}.default =
+      #   pythonSet.mkVirtualEnv "electionguard-env" workspace.deps.default;
 
-      # TODO why no ${system} here?
-      packages.electionguard = pythonSet.electionguard;
+      packages.${system}.default = pythonSet.electionguard;
 
       packages.checks-e2e = pkgs.runCommand "electionguard-e2e-check"
 	{ nativeBuildInputs = [ packages.${system}.default ]; }
@@ -101,10 +100,10 @@
 	    --keys-dir=$out/test_data_private_guardian_data
 	'';
 
-#       checks.${system} = {
-# 	e2e = packages.${system}.checks-e2e;
-# 	setup = packages.${system}.checks-setup;
-#       };
+      checks.${system} = {
+	e2e = packages.${system}.checks-e2e;
+	setup = packages.${system}.checks-setup;
+      };
 
       # dev shell with editable install
       devShells.${system}.default =
