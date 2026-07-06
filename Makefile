@@ -18,19 +18,22 @@ environment:
 	pip3 --version || python3 -m pip install -U pip
 	poetry --version | grep '2.2.1' || pip3 install 'poetry==2.2.1'
 	poetry config virtualenvs.in-project true 
-	make install
+	printf "Cython<3\n" > /tmp/pip-constraints.txt
+	PIP_CONSTRAINT=/tmp/pip-constraints.txt poetry install
+	poetry run pip install 'setuptools<83'
 	@echo 🚨 Be sure to add poetry to PATH
 	make fetch-sample-data
 
 install:
 	@echo 🔧 INSTALL
 	# TODO is this really necessary to get around network errors?
-	for n in {1..3}; do poetry install && break || sleep 3; done
+	for n in {1..3}; do poetry install && poetry run pip install 'setuptools<83' && break || sleep 3; done
 
 build:
 	@echo 🔨 BUILD
 	poetry build
-	make install 
+	poetry install 
+	poetry run pip install 'setuptools<83'
 
 openssl-fix:
 	export LDFLAGS=-L/usr/local/opt/openssl/lib
@@ -56,6 +59,7 @@ install-gmp-linux:
 	@echo 🐧 LINUX INSTALL
 ifeq ($(PKG_MGR), apt-get)
 	# only install if needed
+	sudo apt-get update
 	ldconfig -p | grep libgmp  || sudo apt-get install libgmp-dev
 	ldconfig -p | grep libmpfr || sudo apt-get install libmpfr-dev
 	ldconfig -p | grep libmpc  || sudo apt-get install libmpc-dev

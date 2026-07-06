@@ -53,7 +53,7 @@ class CiphertextTallySelection(ElectionObjectBase, CiphertextSelection):
     """
 
     ciphertext: ElGamalCiphertext = field(
-        default=ElGamalCiphertext(ONE_MOD_P, ONE_MOD_P)
+        default_factory=lambda: ElGamalCiphertext(ONE_MOD_P, ONE_MOD_P)
     )
     """
     The encrypted representation of the total of all ballots for this selection
@@ -129,17 +129,17 @@ class CiphertextTallyContest(OrderedObjectBase):
             scheduler = Scheduler()
 
         # iterate through the tally selections and add the new value to the total
-        results: List[
-            Tuple[SelectionId, Optional[ElGamalCiphertext]]
-        ] = scheduler.schedule(
-            self._accumulate_selections,
-            [
-                (key, selection_tally, contest_selections)
-                for (key, selection_tally) in self.selections.items()
-            ],
+        results: List[Tuple[SelectionId, Optional[ElGamalCiphertext]]] = (
+            scheduler.schedule(
+                self._accumulate_selections,
+                [
+                    (key, selection_tally, contest_selections)
+                    for (key, selection_tally) in self.selections.items()
+                ],
+            )
         )
 
-        for (key, ciphertext) in results:
+        for key, ciphertext in results:
             if ciphertext is None:
                 return False
             self.selections[key].ciphertext = ciphertext
@@ -238,7 +238,7 @@ class CiphertextTally(ElectionObjectBase, Container, Sized):
             log_warning(f"append cannot add {ballot.object_id} with invalid state")
             return False
 
-        if self.__contains__(ballot):
+        if ballot in self:
             log_warning(f"append cannot add {ballot.object_id} that is already tallied")
             return False
 
@@ -265,13 +265,13 @@ class CiphertextTally(ElectionObjectBase, Container, Sized):
         """
         Append a collection of Ballots to the tally and recalculate
         """
-        cast_ballot_selections: Dict[
-            SelectionId, Dict[BallotId, ElGamalCiphertext]
-        ] = {}
+        cast_ballot_selections: Dict[SelectionId, Dict[BallotId, ElGamalCiphertext]] = (
+            {}
+        )
         for ballot in ballots:
             # get the value of the dict
             ballot_value = ballot[1]
-            if not self.__contains__(ballot) and ballot_is_valid_for_election(
+            if ballot_value not in self and ballot_is_valid_for_election(
                 ballot_value, self._internal_manifest, self._encryption, should_validate
             ):
                 if ballot_value.state == BallotBoxState.CAST:
