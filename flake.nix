@@ -47,6 +47,12 @@
 	  bottle-websocket = addBuildSystem { setuptools = []; wheel = []; } prev.bottle-websocket;
 	  eel              = addBuildSystem { setuptools = []; wheel = []; } prev.eel;
 	  electionguard    = addBuildSystem { hatchling = []; editables = []; } prev.electionguard;
+	  gmpy2 = (addBuildSystem { setuptools = []; cython = []; } prev.gmpy2).overrideAttrs (old: {
+	    nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ ];
+	    buildInputs = (old.buildInputs or []) ++ [ pkgs.gmp pkgs.mpfr pkgs.libmpc ];
+	    NIX_CFLAGS_COMPILE = "-I${pkgs.gmp.dev}/include";
+	    NIX_LDFLAGS = "-L${pkgs.gmp}/lib";
+	  });
 	};
 
       pythonSet =
