@@ -37,48 +37,25 @@
       };
 
       # ---- YOUR NATIVE-DEP OVERRIDES ----
-      pyprojectOverrides = final: prev: {
 
-	gmpy2 = prev.gmpy2.overrideAttrs (old: {
-	  nativeBuildInputs = (old.nativeBuildInputs or [ ])
-	    ++ final.resolveBuildSystem { setuptools = []; cython = []; };
-	  buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.gmp pkgs.mpfr pkgs.libmpc ];
-	  NIX_CFLAGS_COMPILE = "-I${pkgs.gmp.dev}/include";
-	  NIX_LDFLAGS = "-L${pkgs.gmp}/lib";
-	});
-
-        # these all fail to build without an override because they expect ambient setuptools:
-	atomicwrites = prev.atomicwrites.overrideAttrs (old: {
-	  nativeBuildInputs = (old.nativeBuildInputs or [ ])
-	    ++ final.resolveBuildSystem {
-	      setuptools = [ ];
-	      wheel = [ ];
-	    };
-	});
-        bottle-websocket = prev.bottle-websocket.overrideAttrs (old: {
-	  nativeBuildInputs = (old.nativeBuildInputs or [ ])
-	    ++ final.resolveBuildSystem {
-	      setuptools = [ ];
-	      wheel = [ ];
-	    };
-	});
-        eel = prev.eel.overrideAttrs (old: {
-	  nativeBuildInputs = (old.nativeBuildInputs or [ ])
-	    ++ final.resolveBuildSystem {
-	      setuptools = [ ];
-	      wheel = [ ];
-	    };
-	});
-
-	electionguard = prev.electionguard.overrideAttrs (old: {
-	  nativeBuildInputs = (old.nativeBuildInputs or [ ])
-	    ++ final.resolveBuildSystem {
-	      hatchling = [ ];
-	      editables = [ ];
-	    };
-	});
-
-      };
+      pyprojectOverrides = final: prev:
+	let
+	  addBuildSystem = names: pkg: pkg.overrideAttrs (old: {
+	    nativeBuildInputs = (old.nativeBuildInputs or [])
+	      ++ final.resolveBuildSystem names;
+	  });
+	in {
+	  atomicwrites     = addBuildSystem { setuptools = []; wheel = []; } prev.atomicwrites;
+	  bottle-websocket = addBuildSystem { setuptools = []; wheel = []; } prev.bottle-websocket;
+	  eel              = addBuildSystem { setuptools = []; wheel = []; } prev.eel;
+	  electionguard    = addBuildSystem { hatchling = []; editables = []; } prev.electionguard;
+	  gmpy2 = (addBuildSystem { setuptools = []; cython = []; } prev.gmpy2).overrideAttrs (old: {
+	    nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ ];
+	    buildInputs = (old.buildInputs or []) ++ [ pkgs.gmp pkgs.mpfr pkgs.libmpc ];
+	    NIX_CFLAGS_COMPILE = "-I${pkgs.gmp.dev}/include";
+	    NIX_LDFLAGS = "-L${pkgs.gmp}/lib";
+	  });
+	};
 
       pythonSet =
         (pkgs.callPackage pyproject-nix.build.packages { inherit python; })
