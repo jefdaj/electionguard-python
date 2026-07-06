@@ -128,7 +128,7 @@ test-integration:
 # Coverage
 coverage:
 	@echo ✅ COVERAGE
-	coverage run -m pytest
+	TZ=America/New_York coverage run -m pytest   # FIXME: upstream test assumes ET; remove after fix
 	coverage report --fail-under=$(CODE_COVERAGE)
 
 coverage-html:
