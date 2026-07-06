@@ -24,7 +24,7 @@
   outputs = { nixpkgs, uv2nix, pyproject-nix, pyproject-build-systems, ... }:
     let
       inherit (nixpkgs) lib;
-      system = "x86_64-linux";              # add others via flake-utils if needed
+      system = "x86_64-linux"; # TODO add others? may depond on whether mac/win users run linux Docker images
       pkgs = nixpkgs.legacyPackages.${system};
       python = pkgs.python313;
 
@@ -36,10 +36,7 @@
       #   sha256sum = "144nl31sriynbhy4cf0ia5izs13zc8l69qfr966nbm69rdj0wyyk";
       # };
 
-      # Load workspace from your uv.lock
       workspace = uv2nix.lib.workspace.loadWorkspace { workspaceRoot = ./.; };
-
-      # Base overlay generated from the lock file
       overlay = workspace.mkPyprojectOverlay {
         sourcePreference = "wheel";         # or "sdist" if you need source builds
       };
@@ -76,6 +73,8 @@
         pythonSet.mkVirtualEnv "electionguard-env" workspace.deps.default;
 
       checks.${system} = {
+
+        # This one is dynamic, and I didn't bother yet checking that the zip includes particular filename patterns.
         e2e-simple-election = pkgs.runCommand "electionguard-e2e-simple-election-check"
           { nativeBuildInputs = [ packages.${system}.default ]; }
           ''
