@@ -8,9 +8,7 @@ RUN apt update && apt-get install -y \
 RUN apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-# upgraded to fix missing hashes bug
-# https://stackoverflow.com/a/73388529
-RUN pip install 'poetry==1.1.14'
+RUN pip install 'poetry==2.2.1'
 
 COPY ./ /repo
 WORKDIR /repo
