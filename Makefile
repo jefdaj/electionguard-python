@@ -73,30 +73,30 @@ lint:
 auto-lint:
 	@echo 💚 AUTO LINT
 	@echo Auto-generating __init__
-	poetry run mkinit src/electionguard --write --black
-	poetry run mkinit src/electionguard_tools --write --recursive --black
-	poetry run mkinit src/electionguard_verify --write --black
-	poetry run mkinit src/electionguard_cli --write --recursive --black
-	poetry run mkinit src/electionguard_gui --write --recursive --black
+	mkinit src/electionguard --write --black
+	mkinit src/electionguard_tools --write --recursive --black
+	mkinit src/electionguard_verify --write --black
+	mkinit src/electionguard_cli --write --recursive --black
+	mkinit src/electionguard_gui --write --recursive --black
 	@echo Reformatting using Black
 	make blackformat
 	make lint
 	
 pylint:
-	poetry run pylint --extension-pkg-allow-list=dependency_injector ./src ./tests
+	pylint --extension-pkg-allow-list=dependency_injector ./src ./tests
 
 blackformat:
-	poetry run black .
+	black .
 
 blackcheck:
-	poetry run black --check .
+	black --check .
 
 mypy:
-	poetry run mypy src/electionguard src/electionguard_tools src/electionguard_cli src/electionguard_gui stubs
+	mypy src/electionguard src/electionguard_tools src/electionguard_cli src/electionguard_gui stubs
 
 validate: 
 	@echo ✅ VALIDATE
-	@poetry run python3 -c 'import electionguard; print(electionguard.__package__ + " successfully imported")'
+	@python3 -c 'import electionguard; print(electionguard.__package__ + " successfully imported")'
 
 # Test
 unit-tests:
