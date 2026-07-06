@@ -28,6 +28,14 @@
       pkgs = nixpkgs.legacyPackages.${system};
       python = pkgs.python313;
 
+      # Static sample data
+      # TODO vendor this into the repo? it's been the same for years now
+      # TODO is it actually needed for any tests?
+      # egSampleData = pkgs.fetchurl {
+      #   url = "https://github.com/microsoft/electionguard/releases/download/v1.0/sample-data.zip";
+      #   sha256sum = "144nl31sriynbhy4cf0ia5izs13zc8l69qfr966nbm69rdj0wyyk";
+      # };
+
       # Load workspace from your uv.lock
       workspace = uv2nix.lib.workspace.loadWorkspace { workspaceRoot = ./.; };
 
