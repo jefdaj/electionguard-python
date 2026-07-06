@@ -389,7 +389,6 @@ from electionguard.type import (
 )
 from electionguard.utils import (
     BYTE_ENCODING,
-    BYTE_ORDER,
     ContestErrorType,
     ContestException,
     NullVoteException,
@@ -409,7 +408,6 @@ from electionguard.utils import (
 __all__ = [
     "AnnotatedString",
     "BYTE_ENCODING",
-    "BYTE_ORDER",
     "BackupVerificationState",
     "BallotBox",
     "BallotBoxState",

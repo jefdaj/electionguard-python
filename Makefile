@@ -59,12 +59,12 @@ install-gmp-linux:
 	@echo 🐧 LINUX INSTALL
 ifeq ($(PKG_MGR), apt-get)
 	# only install if needed
-	sudo apt-get update
-	ldconfig -p | grep libgmp  || sudo apt-get install libgmp-dev
-	ldconfig -p | grep libmpfr || sudo apt-get install libmpfr-dev
-	ldconfig -p | grep libmpc  || sudo apt-get install libmpc-dev
+	apt-get update
+	ldconfig -p | grep libgmp  || apt-get install libgmp-dev
+	ldconfig -p | grep libmpfr || apt-get install libmpfr-dev
+	ldconfig -p | grep libmpc  || apt-get install libmpc-dev
 else ifeq ($(PKG_MGR), pacman)
-	sudo pacman -S gmp
+	pacman -S gmp
 else ifeq ($(PKG_MGR), undefined)
 	@echo "We could not install GMP automatically for your Linux distribution. Please, install GMP manually."
 endif
@@ -181,7 +181,7 @@ dependency-graph:
 	poetry run pydeps --noshow --max-bacon 2 -o dependency-graph.svg src/electionguard
 
 dependency-graph-ci:
-	sudo apt install graphviz
+	apt install graphviz
 	poetry run pydeps --noshow --max-bacon 2 -o dependency-graph.svg src/electionguard
 
 # Sample Data
