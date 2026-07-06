@@ -88,16 +88,41 @@
               --output-record=$out/election_record.zip
           '';
 
-        e2e-setup = pkgs.runCommand "electionguard-e2e-setup-check"
-          { nativeBuildInputs = [ packages.${system}.default ]; }
-          ''
-            mkdir -p $out
-            eg setup \
-              --guardian-count=2 --quorum=2 \
-              --manifest=${./data/election_manifest_simple.json} \
-              --package-dir=$out/public_encryption_package \
-              --keys-dir=$out/test_data_private_guardian_data
-          '';
+        e2e-setup =
+          let expectedTree = nixpkgs.lib.concatStringsSep "\n" [
+	      "public_encryption_package"
+	      "public_encryption_package/constants.json"
+	      "public_encryption_package/context.json"
+	      "public_encryption_package/guardians"
+	      "public_encryption_package/guardians/guardian_1.json"
+	      "public_encryption_package/guardians/guardian_2.json"
+	      "public_encryption_package/manifest.json"
+	      "test_data_private_guardian_data"
+	      "test_data_private_guardian_data/guardian_1.json"
+	      "test_data_private_guardian_data/guardian_2.json"
+	    ];
+          in pkgs.runCommand "electionguard-e2e-setup-check"
+	    {
+              nativeBuildInputs = [ packages.${system}.default ];
+              expectedTree = expectedTree;
+            }
+	    ''
+	      mkdir -p $out
+              cd $out
+	      eg setup \
+		--guardian-count=2 --quorum=2 \
+		--manifest=${./data/election_manifest_simple.json} \
+		--package-dir=public_encryption_package \
+		--keys-dir=test_data_private_guardian_data
+
+	      actual=$(find . -mindepth 1 | sed 's|^\./||' | sort)
+
+	      if [ "$actual" != "$expectedTree" ]; then
+		echo "Tree mismatch:" >&2
+		diff <(echo "$expected") <(echo "$actual") >&2 || true
+		exit 1
+	      fi
+	    '';
       };
 
       # dev shell with editable install
