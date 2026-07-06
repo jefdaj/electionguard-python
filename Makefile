@@ -281,4 +281,4 @@ eg-e2e-simple-election:
 	eg e2e --guardian-count=2 --quorum=2 --manifest=data/election_manifest_simple.json --ballots=data/plaintext_ballots_simple.json --spoil-id=25a7111b-4334-425a-87c1-f7a49f42b3a2 --output-record="./election_record.zip"
 
 eg-setup-simple-election:
-	eg setup --guardian-count=2 --quorum=2 --manifest=data/election_manifest_simple.json  --package-dir=../data/out/public_encryption_package --keys-dir=../data/out/test_data_private_guardian_data
+	eg setup --guardian-count=2 --quorum=2 --manifest=data/election_manifest_simple.json  --package-dir=data/out/public_encryption_package --keys-dir=data/out/test_data_private_guardian_data
