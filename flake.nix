@@ -70,6 +70,14 @@
 	    };
 	});
 
+	electionguard = prev.electionguard.overrideAttrs (old: {
+	  nativeBuildInputs = (old.nativeBuildInputs or [ ])
+	    ++ final.resolveBuildSystem {
+	      hatchling = [ ];
+	      editables = [ ];
+	    };
+	});
+
       };
 
       pythonSet =
