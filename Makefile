@@ -14,7 +14,6 @@ all: environment install build validate auto-lint coverage
 
 environment:
 	@echo 🔧 ENVIRONMENT SETUP
-	make fetch-sample-data
 
 install:
 	@echo 🔧 INSTALL
@@ -114,7 +113,7 @@ integration-tests:
 # Try to match original upstream behavior for comparison
 test: export HYPOTHESIS_PROFILE=defaults
 test: 
-	@echo ✅ ALL TESTS (defaults)
+	@echo ✅ ALL TESTS defaults
 	make unit-tests
 	make property-tests
 	make integration-tests
@@ -122,7 +121,7 @@ test:
 # Fast, deterministic tests for use during Nix builds
 test-nix: export HYPOTHESIS_PROFILE=nix
 test-nix:
-	@echo ✅ ALL TESTS (nix)
+	@echo ✅ ALL TESTS nix
 	make unit-tests
 	make property-tests
 	make integration-tests
@@ -132,7 +131,7 @@ test-nix:
 # FIXME tests/unit/electionguard/test_decryption.py::TestDecryption::test_reconstruct_decryption_share - AttributeError: 'NoneType' object has no attribute 'style_id'
 test-careful: export HYPOTHESIS_PROFILE=careful
 test-careful:
-	@echo ✅ ALL TESTS (careful)
+	@echo ✅ ALL TESTS careful
 	make unit-tests
 	make property-tests
 	make integration-tests
@@ -194,13 +193,6 @@ dependency-graph-ci:
 # Sample Data
 fetch-sample-data:
 	@echo ⬇️ FETCH Sample Data
-ifeq ($(OS), Windows)
-	choco install wget
-	choco install unzip
-endif
-	# only download if needed
-	test -f sample-data.zip || wget -O sample-data.zip https://github.com/microsoft/electionguard/releases/download/v1.0/sample-data.zip
-	unzip -o sample-data.zip
 
 generate-sample-data:
 	@echo 🔁 GENERATE Sample Data
