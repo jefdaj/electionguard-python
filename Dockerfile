@@ -12,6 +12,11 @@ RUN apt-get clean && \
 # https://stackoverflow.com/a/73388529
 RUN pip install 'poetry==1.1.14'
 
+# TODO is there a standard username?
+# TODO can the uid/gid be pulled from current user's env?
+RUN adduser --system --no-create-home --uid 1000 --gid 100 eg
+USER eg
+
 COPY ./ /repo
 WORKDIR /repo
 
