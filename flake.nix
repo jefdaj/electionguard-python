@@ -36,8 +36,6 @@
         sourcePreference = "wheel";         # or "sdist" if you need source builds
       };
 
-      # ---- YOUR NATIVE-DEP OVERRIDES ----
-
       pyprojectOverrides = final: prev:
 	let
 	  addBuildSystem = names: pkg: pkg.overrideAttrs (old: {
@@ -76,14 +74,15 @@
             workspace.deps.all;
         in
         pkgs.mkShell {
-          packages = [
+          packages = with pkgs; [
+            graphviz
+            jq
+            unzip
+            uv
+            wget
+            zip
+
             venv
-            pkgs.uv
-            pkgs.wget
-            pkgs.zip
-            pkgs.unzip
-            pkgs.graphviz
-            pkgs.jq
           ];
           env = {
             UV_NO_SYNC = "1";
