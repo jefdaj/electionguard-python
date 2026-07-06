@@ -1,12 +1,12 @@
 [project]
 name = "electionguard"
 version = "1.4.0"
-requires-python = ">=3.9.5,<4.0.0"
 description = "ElectionGuard: Support for e2e verified elections."
-license = "MIT"
-authors = [{"name" = "Microsoft", "email" = "electionguard@microsoft.com"}]
-maintainers = []
+authors = [{ name = "Microsoft", email = "electionguard@microsoft.com" }]
+requires-python = ">=3.9.5,<4.0.0"
 readme = "README.md"
+license = "MIT"
+maintainers = []
 keywords = []
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -16,21 +16,21 @@ classifiers = [
     "Operating System :: MacOS",
     "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python",
-    "Topic :: Utilities"
+    "Topic :: Utilities",
 ]
 dependencies = [
-  "gmpy2>=2.0.8,<3.0.0",
-  "psutil>=5.7.2",
-  "pydantic==2.13.0",
-  "click>=8.1.0,<9.0.0",
-  "dacite>=1.6.0,<2.0.0",
-  "python-dateutil>=2.8.2,<3.0.0",
-  "types-python-dateutil>=2.8.14,<3.0.0",
-  "Eel[jinja2]>=0.14.0,<1.0.0",
-  "pymongo>=4.1.1,<5.0.0",
-  "dependency-injector>=4.39.1,<5.0.0",
-  "pytest-mock>=3.8.2,<4.0.0",
-  "ordered-set (>=4.1.0,<5.0.0)",
+    "gmpy2>=2.0.8,<3.0.0",
+    "psutil>=5.7.2",
+    "pydantic==2.13.0",
+    "click>=8.1.0,<9.0.0",
+    "dacite>=1.6.0,<2.0.0",
+    "python-dateutil>=2.8.2,<3.0.0",
+    "types-python-dateutil>=2.8.14,<3.0.0",
+    "Eel[jinja2]>=0.14.0,<1.0.0",
+    "pymongo>=4.1.1,<5.0.0",
+    "dependency-injector>=4.39.1,<5.0.0",
+    "pytest-mock>=3.8.2,<4.0.0",
+    "ordered-set (>=4.1.0,<5.0.0)",
 ]
 
 [project.urls]
@@ -39,42 +39,65 @@ repository = "https://github.com/microsoft/electionguard-python"
 documentation = "https://microsoft.github.io/electionguard-python"
 "GitHub Pages" = "https://microsoft.github.io/electionguard-python"
 "Read the Docs" = "https://electionguard-python.readthedocs.io"
-"Releases" = "https://github.com/microsoft/electionguard-python/releases"
-"Milestones" = "https://github.com/microsoft/electionguard-python/milestones"
+Releases = "https://github.com/microsoft/electionguard-python/releases"
+Milestones = "https://github.com/microsoft/electionguard-python/milestones"
 "Issue Tracker" = "https://github.com/microsoft/electionguard-python/issues"
 
-[tool.poetry]
-packages = [
-  { include = "electionguard", from = "src" },
-  { include = "electionguard_tools", from = "src" },
-  { include = "electionguard_cli", from = "src" },
-  { include = "electionguard_gui", from = "src" },
+[project.scripts]
+eg = "electionguard_cli.start:cli"
+egui = "electionguard_gui.start:run"
+
+[dependency-groups]
+dev = [
+    "atomicwrites",
+    "black==25.11.0",
+    "coverage",
+    "docutils",
+    "hypothesis>=5.15.1",
+    "ipython>=7.31.1,<8",
+    "ipykernel>=6.4.1,<7",
+    "jeepney",
+    "jupyter-black>=0.3.1,<0.4",
+    "mkdocs>=1.6.1,<2",
+    "mkdocs-jupyter>=0.26.2,<0.27",
+    "mkinit>=0.3.3,<0.4",
+    "mypy==1.19.1",
+    "pydeps",
+    "pylint",
+    "pytest",
+    "secretstorage",
+    "twine",
+    "typish",
 ]
 
-[tool.poetry.group.dev.dependencies]
-atomicwrites = "*"
-black = "25.11.0"
-coverage = "*"
-docutils = "*"
-hypothesis = ">=5.15.1"
-ipython = "^7.31.1"
-ipykernel = "^6.4.1"
-jeepney = "*"
-jupyter-black = "^0.3.1"
-mkdocs = "^1.6.1"
-mkdocs-jupyter = "^0.26.2"
-mkinit = "^0.3.3"
-mypy = "1.19.1"
-pydeps = "*"
-pylint = "*"
-pytest = "*"
-secretstorage = "*"
-twine = "*"
-typish = '*'
+[tool.uv]
+default-groups = "all"
 
-[project.scripts]
-eg = 'electionguard_cli.start:cli'
-egui = 'electionguard_gui.start:run'
+[tool.hatch.build.targets.sdist]
+include = [
+    "src/electionguard",
+    "src/electionguard_tools",
+    "src/electionguard_cli",
+    "src/electionguard_gui",
+]
+
+[tool.hatch.build.targets.wheel]
+include = [
+    "src/electionguard",
+    "src/electionguard_tools",
+    "src/electionguard_cli",
+    "src/electionguard_gui",
+]
+
+[tool.hatch.build.targets.wheel.sources]
+"src/electionguard" = "electionguard"
+"src/electionguard_tools" = "electionguard_tools"
+"src/electionguard_cli" = "electionguard_cli"
+"src/electionguard_gui" = "electionguard_gui"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.black]
 target-version = ['py39']
@@ -113,10 +136,6 @@ source = ["src/electionguard"]
 
 [tool.coverage.html]
 directory = "coverage_html_report"
-
-[build-system]
-requires = ["poetry-core>=2.0.0"]
-build-backend = "poetry.core.masonry.api"
 
 [tool.mypy]
 python_version = "3.9"
