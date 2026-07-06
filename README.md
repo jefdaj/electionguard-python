@@ -5,7 +5,7 @@ This is my fork for use in [the Cardano integration](https://github.com/jefdaj/e
 
 Main changes:
 
-- [Fixed a `poetry.lock` bug](https://github.com/jefdaj/electionguard-python/commit/2d2f9e0901b70ae2adea09b749dd03757395b977)
+- ~~[Fixed a `poetry.lock` bug](https://github.com/jefdaj/electionguard-python/commit/2d2f9e0901b70ae2adea09b749dd03757395b977)~~ Fixed upstream now
 - Added a [Dockerfile](./Dockerfile) along with [build](./docker-build.sh), [test](./docker-test.sh), and [hack](./docker-shell.sh) scripts
 - Published [the Docker image](https://ghcr.io/jefdaj/electionguard-python)
 - Updated to current upstream code as of 2026-07-06
