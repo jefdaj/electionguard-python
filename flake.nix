@@ -92,6 +92,8 @@
       packages.${system}.default =
         pythonSet.mkVirtualEnv "electionguard-env" workspace.deps.default;
 
+      packages.electionguard = pythonSet.electionguard;
+
       # dev shell with editable install
       devShells.${system}.default =
         let
