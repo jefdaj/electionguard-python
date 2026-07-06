@@ -14,26 +14,13 @@ all: environment install build validate auto-lint coverage
 
 environment:
 	@echo 🔧 ENVIRONMENT SETUP
-	make install-gmp
-	pip3 --version || python3 -m pip install -U pip
-	poetry --version | grep '2.2.1' || pip3 install 'poetry==2.2.1'
-	poetry config virtualenvs.in-project true 
-	printf "Cython<3\n" > /tmp/pip-constraints.txt
-	PIP_CONSTRAINT=/tmp/pip-constraints.txt poetry install
-	poetry run pip install 'setuptools<83'
-	@echo 🚨 Be sure to add poetry to PATH
 	make fetch-sample-data
 
 install:
 	@echo 🔧 INSTALL
-	# TODO is this really necessary to get around network errors?
-	for n in {1..3}; do poetry install && poetry run pip install 'setuptools<83' && break || sleep 3; done
 
 build:
 	@echo 🔨 BUILD
-	poetry build
-	poetry install 
-	poetry run pip install 'setuptools<83'
 
 openssl-fix:
 	export LDFLAGS=-L/usr/local/opt/openssl/lib
@@ -114,15 +101,15 @@ validate:
 # Test
 unit-tests:
 	@echo ✅ UNIT TESTS
-	poetry run pytest tests/unit
+	TZ=America/New_York pytest tests/unit   # FIXME: upstream test assumes ET; remove after fix
 
 property-tests:
 	@echo ✅ PROPERTY TESTS
-	poetry run pytest tests/property
+	pytest tests/property
 
 integration-tests:
 	@echo ✅ INTEGRATION TESTS
-	poetry run pytest tests/integration
+	pytest tests/integration
 
 test: 
 	@echo ✅ ALL TESTS
@@ -132,31 +119,31 @@ test:
 
 test-example:
 	@echo ✅ TEST Example
-	poetry run python3 -m pytest -s tests/integration/test_end_to_end_election.py
+	pytest -s tests/integration/test_end_to_end_election.py
 
 test-integration:
 	@echo ✅ INTEGRATION TESTS
-	poetry run pytest tests/integration
+	pytest tests/integration
 
 # Coverage
 coverage:
 	@echo ✅ COVERAGE
-	poetry run coverage run -m pytest
-	poetry run coverage report --fail-under=$(CODE_COVERAGE)
+	coverage run -m pytest
+	coverage report --fail-under=$(CODE_COVERAGE)
 
 coverage-html:
-	poetry run coverage html -d coverage
+	coverage html -d coverage
 
 coverage-xml:
-	poetry run coverage xml
+	coverage xml
 
 coverage-erase:
-	@poetry run coverage erase
+	@coverage erase
 
 # Benchmark
 bench:
 	@echo 📊 BENCHMARKS
-	poetry run python3 -s tests/bench/bench_chaum_pedersen.py
+	python3 -s tests/bench/bench_chaum_pedersen.py
 
 # Documentation
 install-mkdocs:
@@ -164,25 +151,25 @@ install-mkdocs:
 	pip install mkdocs-jupyter
 
 docs-serve:
-	poetry run mkdocs serve
+	mkdocs serve
 
 docs-build:
-	poetry run mkdocs build
+	mkdocs build
 
 docs-deploy:
 	@echo 🚀 DEPLOY to Github Pages
-	poetry run mkdocs gh-deploy --force
+	mkdocs gh-deploy --force
 
 docs-deploy-ci:
 	@echo 🚀 DEPLOY to Github Pages
-	poetry run mkdocs gh-deploy --force
+	mkdocs gh-deploy --force
 
 dependency-graph:
-	poetry run pydeps --noshow --max-bacon 2 -o dependency-graph.svg src/electionguard
+	pydeps --noshow --max-bacon 2 -o dependency-graph.svg src/electionguard
 
 dependency-graph-ci:
 	apt install graphviz
-	poetry run pydeps --noshow --max-bacon 2 -o dependency-graph.svg src/electionguard
+	pydeps --noshow --max-bacon 2 -o dependency-graph.svg src/electionguard
 
 # Sample Data
 fetch-sample-data:
@@ -197,7 +184,7 @@ endif
 
 generate-sample-data:
 	@echo 🔁 GENERATE Sample Data
-	poetry run python3 src/electionguard_tools/scripts/sample_generator.py -m "hamilton-general" -n $(SAMPLE_BALLOT_COUNT) -s $(SAMPLE_BALLOT_SPOIL_RATE)
+	python3 src/electionguard_tools/scripts/sample_generator.py -m "hamilton-general" -n $(SAMPLE_BALLOT_COUNT) -s $(SAMPLE_BALLOT_SPOIL_RATE)
 
 # Publish
 publish:
@@ -239,7 +226,7 @@ ifeq "${EG_DB_PASSWORD}" ""
 	@echo "Set the EG_DB_PASSWORD environment variable"
 	exit 1
 endif
-	poetry run egui
+	egui
 
 start-db:
 ifeq "${EG_DB_PASSWORD}" ""
@@ -265,7 +252,7 @@ stop-egui:
 	docker compose --env-file ./.env -f src/electionguard_gui/docker-compose.yml down
 
 eg-e2e-simple-election:
-	poetry run eg e2e --guardian-count=2 --quorum=2 --manifest=data/election_manifest_simple.json --ballots=data/plaintext_ballots_simple.json --spoil-id=25a7111b-4334-425a-87c1-f7a49f42b3a2 --output-record="./election_record.zip"
+	eg e2e --guardian-count=2 --quorum=2 --manifest=data/election_manifest_simple.json --ballots=data/plaintext_ballots_simple.json --spoil-id=25a7111b-4334-425a-87c1-f7a49f42b3a2 --output-record="./election_record.zip"
 
 eg-setup-simple-election:
-	poetry run eg setup --guardian-count=2 --quorum=2 --manifest=data/election_manifest_simple.json  --package-dir=../data/out/public_encryption_package --keys-dir=../data/out/test_data_private_guardian_data
+	eg setup --guardian-count=2 --quorum=2 --manifest=data/election_manifest_simple.json  --package-dir=../data/out/public_encryption_package --keys-dir=../data/out/test_data_private_guardian_data

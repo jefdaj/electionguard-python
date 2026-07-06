@@ -105,7 +105,15 @@
             workspace.deps.all;
         in
         pkgs.mkShell {
-          packages = [ venv pkgs.uv ];
+          packages = [
+            venv
+            pkgs.uv
+            pkgs.wget
+            pkgs.zip
+            pkgs.unzip
+            pkgs.graphviz
+            pkgs.jq
+          ];
           env = {
             UV_NO_SYNC = "1";
             UV_PYTHON = "${venv}/bin/python";
