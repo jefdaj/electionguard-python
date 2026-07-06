@@ -65,10 +65,10 @@ lint:
 	@echo 3.Mypy Static Typing
 	make mypy
 	@echo 4.Package Metadata
-	poetry build
-	poetry run twine check dist/*
+	uv build
+	twine check dist/*
 	@echo 5.Documentation
-	poetry run mkdocs build --strict
+	mkdocs build --strict
 
 auto-lint:
 	@echo 💚 AUTO LINT
