@@ -10,6 +10,10 @@ SAMPLE_BALLOT_SPOIL_RATE ?= 50
 POETRY_REQUESTS_MAX_RETRIES=25
 PYTHONDONTWRITEBYTECODE=True
 
+# FIXME this uncovers occasional failures!
+# FAILED tests/property/test_verify.py::TestVerify::test_verify_aggregation - AttributeError("'NoneType' object has no attribute 'code'") [single exception in FlakyFailure]
+HYPOTHESIS_PROFILE=careful
+
 all: environment install build validate auto-lint coverage
 
 environment:
