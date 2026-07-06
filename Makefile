@@ -187,19 +187,25 @@ generate-sample-data:
 	python3 src/electionguard_tools/scripts/sample_generator.py -m "hamilton-general" -n $(SAMPLE_BALLOT_COUNT) -s $(SAMPLE_BALLOT_SPOIL_RATE)
 
 # Publish
+# TODO test the uv versions of these
 publish:
-	poetry publish
+	uv build
+	uv publish
 
 publish-ci:
 	@echo 🚀 PUBLISH
-	poetry publish --username __token__ --password $(PYPI_TOKEN)
+	uv build
+	uv publish --token $(PYPI_TOKEN)
 
 publish-test:
-	poetry publish --repository testpypi
+	uv build
+	uv publish --publish-url https://test.pypi.org/legacy/ --token $(TEST_PYPI_TOKEN)
 
 publish-test-ci:
 	@echo 🚀 PUBLISH TEST
-	poetry publish --repository testpypi --username __token__ --password $(TEST_PYPI_TOKEN)
+	uv build
+	uv publish --publish-url https://test.pypi.org/legacy/ --token $(TEST_PYPI_TOKEN)
+
 
 # Release
 release-zip-ci:
