@@ -5,7 +5,7 @@
 import os
 from hypothesis import settings, HealthCheck
 
-settings.register_profile("upstream", settings())   # library defaults, random seed
+settings.register_profile("defaults", settings())
 
 settings.register_profile("nix", derandomize=True, deadline=None,
                           suppress_health_check=[HealthCheck.too_slow])

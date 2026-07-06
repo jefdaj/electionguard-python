@@ -10,10 +10,6 @@ SAMPLE_BALLOT_SPOIL_RATE ?= 50
 POETRY_REQUESTS_MAX_RETRIES=25
 PYTHONDONTWRITEBYTECODE=True
 
-# FIXME this uncovers occasional failures!
-# FAILED tests/property/test_verify.py::TestVerify::test_verify_aggregation - AttributeError("'NoneType' object has no attribute 'code'") [single exception in FlakyFailure]
-HYPOTHESIS_PROFILE=careful
-
 all: environment install build validate auto-lint coverage
 
 environment:
@@ -115,8 +111,28 @@ integration-tests:
 	@echo ✅ INTEGRATION TESTS
 	pytest tests/integration
 
+# Try to match original upstream behavior for comparison
+test: export HYPOTHESIS_PROFILE=defaults
 test: 
-	@echo ✅ ALL TESTS
+	@echo ✅ ALL TESTS (defaults)
+	make unit-tests
+	make property-tests
+	make integration-tests
+
+# Fast, deterministic tests for use during Nix builds
+test-nix: export HYPOTHESIS_PROFILE=nix
+test-nix:
+	@echo ✅ ALL TESTS (nix)
+	make unit-tests
+	make property-tests
+	make integration-tests
+
+# Slow tests (large max_examples) to uncover bugs:
+# FIXME tests/property/test_verify.py::TestVerify::test_verify_aggregation - AttributeError("'NoneType' object has no attribute 'code'") [single exception in FlakyFailure]
+# FIXME tests/unit/electionguard/test_decryption.py::TestDecryption::test_reconstruct_decryption_share - AttributeError: 'NoneType' object has no attribute 'style_id'
+test-careful: export HYPOTHESIS_PROFILE=careful
+test-careful:
+	@echo ✅ ALL TESTS (careful)
 	make unit-tests
 	make property-tests
 	make integration-tests
