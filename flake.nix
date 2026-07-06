@@ -38,19 +38,38 @@
 
       # ---- YOUR NATIVE-DEP OVERRIDES ----
       pyprojectOverrides = final: prev: {
-        # replace `gmpy2` with whatever pulls in the C libs
-        gmpy2 = prev.gmpy2.overrideAttrs (old: {
-          nativeBuildInputs = (old.nativeBuildInputs or []) ++ [
-            pkgs.pkg-config
-            (final.resolveBuildSystem { setuptools = []; wheel = []; })
-          ];
-          buildInputs = (old.buildInputs or []) ++ [
-            pkgs.gmp pkgs.mpfr pkgs.libmpc
-          ];
-          # GMP-has-no-.pc footgun:
-          env.NIX_CFLAGS_COMPILE = "-I${pkgs.gmp.dev}/include";
-          NIX_LDFLAGS = "-L${pkgs.gmp}/lib";
-        });
+
+	gmpy2 = prev.gmpy2.overrideAttrs (old: {
+	  nativeBuildInputs = (old.nativeBuildInputs or [ ])
+	    ++ final.resolveBuildSystem { setuptools = []; cython = []; };
+	  buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.gmp pkgs.mpfr pkgs.libmpc ];
+	  NIX_CFLAGS_COMPILE = "-I${pkgs.gmp.dev}/include";
+	  NIX_LDFLAGS = "-L${pkgs.gmp}/lib";
+	});
+
+        # these all fail to build without an override because they expect ambient setuptools:
+	atomicwrites = prev.atomicwrites.overrideAttrs (old: {
+	  nativeBuildInputs = (old.nativeBuildInputs or [ ])
+	    ++ final.resolveBuildSystem {
+	      setuptools = [ ];
+	      wheel = [ ];
+	    };
+	});
+        bottle-websocket = prev.bottle-websocket.overrideAttrs (old: {
+	  nativeBuildInputs = (old.nativeBuildInputs or [ ])
+	    ++ final.resolveBuildSystem {
+	      setuptools = [ ];
+	      wheel = [ ];
+	    };
+	});
+        eel = prev.eel.overrideAttrs (old: {
+	  nativeBuildInputs = (old.nativeBuildInputs or [ ])
+	    ++ final.resolveBuildSystem {
+	      setuptools = [ ];
+	      wheel = [ ];
+	    };
+	});
+
       };
 
       pythonSet =
