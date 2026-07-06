@@ -3,13 +3,34 @@
 
 This is my fork for use in [the Cardano integration](https://github.com/jefdaj/electionguard-cardano).
 
-Main changes so far:
+Main changes:
 
 - [Fixed a `poetry.lock` bug](https://github.com/jefdaj/electionguard-python/commit/2d2f9e0901b70ae2adea09b749dd03757395b977)
 - Added a [Dockerfile](./Dockerfile) along with [build](./docker-build.sh), [test](./docker-test.sh), and [hack](./docker-shell.sh) scripts
 - Published [the Docker image](https://ghcr.io/jefdaj/electionguard-python)
+- Updated to current upstream code as of 2026-07-06
+- Packaged with Nix
+- Have not updated the Docker image for current code yet
 
-## Build
+# New Nix Build
+
+```bash
+# build Python lib + binaries
+nix build
+```
+
+```bash
+# dev env that works with Makefile
+nix develop
+make all
+```
+
+```bash
+# build binary and run eg e2e tests with it
+nix flake check
+```
+
+# Old Docker Build
 
 ```bash
 ./docker-build.sh
