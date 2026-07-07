@@ -49,11 +49,3 @@ docker run -v ./data:/data electionguard:1.4.0-py313.nix e2e \
   --spoil-id=25a7111b-4334-425a-87c1-f7a49f42b3a2 \
   --output-record="/data/out/election_record.zip"
 ```
-
-# Old Docker Build
-
-![docker-build demo](./images/docker-build.gif)
-
-![docker-test demo](./images/docker-test.gif)
-
-![docker-shell demo](./images/docker-shell.gif)
