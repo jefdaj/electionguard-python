@@ -90,10 +90,8 @@
 
           enableFakechroot = true;
           fakeRootCommands = ''
-            mkdir /data
-            chown 1000:100 /data
-            mkdir /tmp
-            chmod 1777 /tmp
+            mkdir /data; chown 1000:100 /data
+            mkdir /tmp ; chmod 1777 /tmp
           '';
 
           config = {
