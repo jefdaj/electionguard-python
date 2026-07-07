@@ -36,13 +36,13 @@ Outputs appear in `./data/out`:
 nix build .#packages.dockerImage
 docker load < result
 
-docker run -v ./data:/data electionguard:1.4.0-py313.nix setup \
+docker run -v ./data:/data electionguard:1.4.0-py313.nix eg setup \
   --guardian-count=2 --quorum=2 \
   --manifest=/data/election_manifest_simple.json  \
   --package-dir=/data/out/public_encryption_package \
   --keys-dir=/data/out/test_data_private_guardian_data
 
-docker run -v ./data:/data electionguard:1.4.0-py313.nix e2e \
+docker run -v ./data:/data electionguard:1.4.0-py313.nix eg e2e \
   --guardian-count=2 --quorum=2 \
   --manifest=/data/election_manifest_simple.json \
   --ballots=/data/plaintext_ballots_simple.json \
