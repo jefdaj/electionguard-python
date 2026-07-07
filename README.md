@@ -20,8 +20,14 @@ Dev env that works with Makefile:
 
 ```bash
 nix develop
+make fetch-sample-data
+make test-nix
+make test-careful
 make all
+# ...
 ```
+
+Note that the uv publish targets are untested.
 
 Build binary and run eg e2e tests with it:
 
