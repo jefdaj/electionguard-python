@@ -81,14 +81,26 @@
         dockerImage = pkgs.dockerTools.buildLayeredImage {
           name = "electionguard";
           tag = "1.4.0-py313.nix";
-          contents = [ appEnv ]; # TODO also egui?
-          extraCommands = ''
-            mkdir -p tmp
-            chmod 1777 tmp
+          contents = [
+            appEnv # TODO also egui?
+            pkgs.coreutils
+            pkgs.bashInteractive
+            pkgs.tini
+          ];
+
+          enableFakechroot = true;
+          fakeRootCommands = ''
+            mkdir /data
+            chown 1000:100 /data
+            mkdir /tmp
+            chmod 1777 /tmp
           '';
+
           config = {
-            Entrypoint = [ "${appEnv}/bin/eg" ];
-            User = "1000:1000"; # TODO named eg user?
+            Entrypoint = [ "${pkgs.tini}/bin/tini" "--" ];
+            Cmd = [ "${appEnv}/bin/eg" ];
+            User = "1000:100"; # TODO named eg user? 1000:1000?
+            Env = [ "PATH=/bin" ];
             Labels = {
               "org.opencontainers.image.version" = "1.4.0+py313.nix";
               "org.opencontainers.image.revision" = "${self.rev or self.dirtyRev or "dirty"}";
