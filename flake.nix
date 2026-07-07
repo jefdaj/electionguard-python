@@ -72,6 +72,37 @@
       packages.${system}.default =
         pythonSet.mkVirtualEnv "electionguard-env" workspace.deps.default;
 
+      # dev shell with editable install
+      devShells.${system}.default =
+        let
+          editableOverlay = workspace.mkEditablePyprojectOverlay {
+            root = "$REPO_ROOT";
+          };
+          editablePythonSet = pythonSet.overrideScope editableOverlay;
+          venv = editablePythonSet.mkVirtualEnv "electionguard-dev-env"
+            workspace.deps.all;
+        in
+        pkgs.mkShell {
+          packages = with pkgs; [
+            graphviz
+            jq
+            unzip
+            uv
+            zip
+
+            venv
+          ];
+          env = {
+            UV_NO_SYNC = "1";
+            UV_PYTHON = "${venv}/bin/python";
+            UV_PYTHON_DOWNLOADS = "never";
+          };
+          shellHook = ''
+            unset PYTHONPATH
+            export REPO_ROOT=$(git rev-parse --show-toplevel)
+          '';
+        };
+
       checks.${system} = {
 
         # This one is dynamic, and I didn't bother yet checking that the zip includes particular filename patterns.
@@ -124,35 +155,5 @@
           '';
       };
 
-      # dev shell with editable install
-      devShells.${system}.default =
-        let
-          editableOverlay = workspace.mkEditablePyprojectOverlay {
-            root = "$REPO_ROOT";
-          };
-          editablePythonSet = pythonSet.overrideScope editableOverlay;
-          venv = editablePythonSet.mkVirtualEnv "electionguard-dev-env"
-            workspace.deps.all;
-        in
-        pkgs.mkShell {
-          packages = with pkgs; [
-            graphviz
-            jq
-            unzip
-            uv
-            zip
-
-            venv
-          ];
-          env = {
-            UV_NO_SYNC = "1";
-            UV_PYTHON = "${venv}/bin/python";
-            UV_PYTHON_DOWNLOADS = "never";
-          };
-          shellHook = ''
-            unset PYTHONPATH
-            export REPO_ROOT=$(git rev-parse --show-toplevel)
-          '';
-        };
     };
 }
