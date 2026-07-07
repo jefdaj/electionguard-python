@@ -29,6 +29,16 @@ make all
 
 Note that the uv publish targets are untested.
 
+It also works for Python coding:
+
+```
+$ nix develop
+$ python
+>>> import electionguard
+>>> import electionguard_verify
+>>> # ...
+```
+
 Build binary and run eg e2e tests with it:
 
 ```bash
