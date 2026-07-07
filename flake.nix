@@ -84,16 +84,8 @@
           contents = [ appEnv ]; # TODO also egui?
           config = {
             Entrypoint = [ "${appEnv}/bin/eg" ];
-            User = "eg";
+            User = "1000:1000"; # TODO is this OK instead of fakeRootCommands?
           };
-
-          # create the non-root user in the final layer
-          fakeRootCommands = ''
-            ${pkgs.dockerTools.shadowSetup}
-            groupadd -r eg --gid 1000
-            useradd -r -g eg --uid 1000 -M eg
-          '';
-          enableFakechroot = true;
         };
 
       };
