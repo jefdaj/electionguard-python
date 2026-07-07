@@ -72,7 +72,31 @@
 
     in
     rec {
-      packages.${system}.default = appEnv;
+
+      packages.${system} = {
+
+        # TODO is there a cleaner variant to make the main package without all the misc bits?
+        default = appEnv;
+
+        dockerImage = pkgs.dockerTools.buildLayeredImage {
+          name = "electionguard";
+          tag = "1.4.0"; # TODO new version even though upstream hasn't changed it?
+          contents = [ appEnv ]; # TODO also egui?
+          config = {
+            Entrypoint = [ "${appEnv}/bin/eg" ];
+            User = "eg";
+          };
+
+          # create the non-root user in the final layer
+          fakeRootCommands = ''
+            ${pkgs.dockerTools.shadowSetup}
+            groupadd -r eg --gid 1000
+            useradd -r -g eg --uid 1000 -M eg
+          '';
+          enableFakechroot = true;
+        };
+
+      };
 
       # dev shell with editable install
       devShells.${system}.default =
