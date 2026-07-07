@@ -8,9 +8,7 @@ Main changes:
 - ~~[Fixed a `poetry.lock` bug](https://github.com/jefdaj/electionguard-python/commit/2d2f9e0901b70ae2adea09b749dd03757395b977)~~ Fixed upstream now
 - Added a [Dockerfile](./Dockerfile) along with [build](./docker-build.sh), [test](./docker-test.sh), and [hack](./docker-shell.sh) scripts
 - Published [the Docker image](https://ghcr.io/jefdaj/electionguard-python)
-- Updated to current upstream code as of 2026-07-06
-- Packaged with Nix
-- Have not updated the Docker image for current code yet
+- Packaged with Nix, including [new Docker image](https://ghcr.io/jefdaj/electionguard-python) with upstream changes as of 2026-07-06
 
 # New Nix Build
 
