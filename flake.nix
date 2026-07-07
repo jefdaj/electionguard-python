@@ -82,6 +82,10 @@
           name = "electionguard";
           tag = "1.4.0-py313.nix";
           contents = [ appEnv ]; # TODO also egui?
+          extraCommands = ''
+            mkdir -p tmp
+            chmod 1777 tmp
+          '';
           config = {
             Entrypoint = [ "${appEnv}/bin/eg" ];
             User = "1000:1000"; # TODO named eg user?

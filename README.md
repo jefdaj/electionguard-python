@@ -30,6 +30,16 @@ make all
 nix flake check
 ```
 
+```
+# build and test docker image as in Makefile
+nix build .#packages.dockerImage
+docker load < result
+
+docker run -v ./data:/data electionguard:1.4.0-py313.nix setup --guardian-count=2 --quorum=2 --manifest=/data/election_manifest_simple.json  --package-dir=/data/out/public_encryption_package --keys-dir=/data/out/test_data_private_guardian_data
+
+docker run -v ./data:/data electionguard:1.4.0-py313.nix e2e --guardian-count=2 --quorum=2 --manifest=/data/election_manifest_simple.json --ballots=/data/plaintext_ballots_simple.json --spoil-id=25a7111b-4334-425a-87c1-f7a49f42b3a2 --output-record="/data/out/election_record.zip"
+```
+
 # Old Docker Build
 
 ```bash
