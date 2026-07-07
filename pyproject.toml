@@ -76,24 +76,30 @@ default-groups = ["dev"]
 [tool.hatch.build.targets.sdist]
 include = [
     "src/electionguard",
-    "src/electionguard_tools",
     "src/electionguard_cli",
+    "src/electionguard_db",
     "src/electionguard_gui",
+    "src/electionguard_tools",
+    "src/electionguard_verify",
 ]
 
 [tool.hatch.build.targets.wheel]
 include = [
     "src/electionguard",
-    "src/electionguard_tools",
     "src/electionguard_cli",
+    "src/electionguard_db",
     "src/electionguard_gui",
+    "src/electionguard_tools",
+    "src/electionguard_verify",
 ]
 
 [tool.hatch.build.targets.wheel.sources]
 "src/electionguard" = "electionguard"
-"src/electionguard_tools" = "electionguard_tools"
 "src/electionguard_cli" = "electionguard_cli"
+"src/electionguard_db" = "electionguard_db"
 "src/electionguard_gui" = "electionguard_gui"
+"src/electionguard_tools" = "electionguard_tools"
+"src/electionguard_verify" = "electionguard_verify"
 
 [build-system]
 requires = ["hatchling"]
