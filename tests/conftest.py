@@ -7,8 +7,9 @@ from hypothesis import settings, HealthCheck
 
 settings.register_profile("defaults", settings())
 
-settings.register_profile("nix", derandomize=True, deadline=None,
-                          suppress_health_check=[HealthCheck.too_slow])
+settings.register_profile(
+    "nix", derandomize=True, deadline=None, suppress_health_check=[HealthCheck.too_slow]
+)
 
 settings.register_profile("careful", max_examples=10000, deadline=None)
 
