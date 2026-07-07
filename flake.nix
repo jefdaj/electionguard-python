@@ -21,7 +21,7 @@
     };
   };
 
-  outputs = { nixpkgs, uv2nix, pyproject-nix, pyproject-build-systems, ... }:
+  outputs = { self, nixpkgs, uv2nix, pyproject-nix, pyproject-build-systems, ... }:
     let
       inherit (nixpkgs) lib;
       system = "x86_64-linux"; # TODO add others? may depond on whether mac/win users run linux Docker images
@@ -80,7 +80,18 @@
 
         dockerImage = pkgs.dockerTools.buildLayeredImage {
           name = "electionguard";
-          tag = "1.4.0"; # TODO new version even though upstream hasn't changed it?
+          tag = "1.4.0-py313.nix";
+          config.Labels = {
+            "org.opencontainers.image.version" = "1.4.0+py313.nix";
+            "org.opencontainers.image.revision" = "${self.rev or self.dirtyRev or "dirty"}";
+            "org.opencontainers.image.source"   = "https://github.com/jefdaj/electionguard-python";
+            "org.opencontainers.image.base.name" = "scratch"; # pure Nix
+            "org.opencontainers.image.description" = "electionguard-python with Nix + uv tooling";
+            "python.version" = "3.13";
+            "build.method" = "nix";
+            "upstream.source"   = "https://github.com/Election-Tech-Initiative/electionguard-python";
+            "upstream.revision" = "bc3fcb7da9d81a922b2a177cc7835b98e93497a3";
+          };
           contents = [ appEnv ]; # TODO also egui?
           config = {
             Entrypoint = [ "${appEnv}/bin/eg" ];
