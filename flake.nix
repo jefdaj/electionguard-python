@@ -42,31 +42,31 @@
       };
 
       pyprojectOverrides = final: prev:
-	let
-	  addBuildSystem = names: pkg: pkg.overrideAttrs (old: {
-	    nativeBuildInputs = (old.nativeBuildInputs or [])
-	      ++ final.resolveBuildSystem names;
-	  });
-	in {
-	  atomicwrites     = addBuildSystem { setuptools = []; wheel = []; } prev.atomicwrites;
-	  bottle-websocket = addBuildSystem { setuptools = []; wheel = []; } prev.bottle-websocket;
-	  eel              = addBuildSystem { setuptools = []; wheel = []; } prev.eel;
-	  electionguard    = addBuildSystem { hatchling = []; editables = []; } prev.electionguard;
-	  gmpy2 = (addBuildSystem { setuptools = []; cython = []; } prev.gmpy2).overrideAttrs (old: {
-	    nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ ];
-	    buildInputs = (old.buildInputs or []) ++ [ pkgs.gmp pkgs.mpfr pkgs.libmpc ];
-	    NIX_CFLAGS_COMPILE = "-I${pkgs.gmp.dev}/include";
-	    NIX_LDFLAGS = "-L${pkgs.gmp}/lib";
-	  });
-	};
+        let
+          addBuildSystem = names: pkg: pkg.overrideAttrs (old: {
+            nativeBuildInputs = (old.nativeBuildInputs or [])
+              ++ final.resolveBuildSystem names;
+          });
+        in {
+          atomicwrites     = addBuildSystem { setuptools = []; wheel = []; } prev.atomicwrites;
+          bottle-websocket = addBuildSystem { setuptools = []; wheel = []; } prev.bottle-websocket;
+          eel              = addBuildSystem { setuptools = []; wheel = []; } prev.eel;
+          electionguard    = addBuildSystem { hatchling = []; editables = []; } prev.electionguard;
+          gmpy2 = (addBuildSystem { setuptools = []; cython = []; } prev.gmpy2).overrideAttrs (old: {
+            nativeBuildInputs = (old.nativeBuildInputs or []) ++ [ ];
+            buildInputs = (old.buildInputs or []) ++ [ pkgs.gmp pkgs.mpfr pkgs.libmpc ];
+            NIX_CFLAGS_COMPILE = "-I${pkgs.gmp.dev}/include";
+            NIX_LDFLAGS = "-L${pkgs.gmp}/lib";
+          });
+        };
 
-      pythonSet =
-        (pkgs.callPackage pyproject-nix.build.packages { inherit python; })
-          .overrideScope (lib.composeManyExtensions [
-            pyproject-build-systems.overlays.default
-            overlay
-            pyprojectOverrides
-          ]);
+        pythonSet =
+          (pkgs.callPackage pyproject-nix.build.packages { inherit python; })
+            .overrideScope (lib.composeManyExtensions [
+              pyproject-build-systems.overlays.default
+              overlay
+              pyprojectOverrides
+            ]);
     in
     rec {
       packages.${system}.default =
@@ -89,39 +89,39 @@
 
         e2e-setup =
           let expectedTree = nixpkgs.lib.concatStringsSep "\n" [
-	      "public_encryption_package"
-	      "public_encryption_package/constants.json"
-	      "public_encryption_package/context.json"
-	      "public_encryption_package/guardians"
-	      "public_encryption_package/guardians/guardian_1.json"
-	      "public_encryption_package/guardians/guardian_2.json"
-	      "public_encryption_package/manifest.json"
-	      "test_data_private_guardian_data"
-	      "test_data_private_guardian_data/guardian_1.json"
-	      "test_data_private_guardian_data/guardian_2.json"
-	    ];
+            "public_encryption_package"
+            "public_encryption_package/constants.json"
+            "public_encryption_package/context.json"
+            "public_encryption_package/guardians"
+            "public_encryption_package/guardians/guardian_1.json"
+            "public_encryption_package/guardians/guardian_2.json"
+            "public_encryption_package/manifest.json"
+            "test_data_private_guardian_data"
+            "test_data_private_guardian_data/guardian_1.json"
+            "test_data_private_guardian_data/guardian_2.json"
+          ];
           in pkgs.runCommand "electionguard-e2e-setup-check"
-	    {
+          {
               nativeBuildInputs = [ packages.${system}.default ];
               expectedTree = expectedTree;
-            }
-	    ''
-	      mkdir -p $out
-              cd $out
-	      eg setup \
-		--guardian-count=2 --quorum=2 \
-		--manifest=${./data/election_manifest_simple.json} \
-		--package-dir=public_encryption_package \
-		--keys-dir=test_data_private_guardian_data
+          }
+          ''
+            mkdir -p $out
+            cd $out
+            eg setup \
+              --guardian-count=2 --quorum=2 \
+              --manifest=${./data/election_manifest_simple.json} \
+              --package-dir=public_encryption_package \
+              --keys-dir=test_data_private_guardian_data
 
-	      actual=$(find . -mindepth 1 | sed 's|^\./||' | sort)
+            actual=$(find . -mindepth 1 | sed 's|^\./||' | sort)
 
-	      if [ "$actual" != "$expectedTree" ]; then
-		echo "Tree mismatch:" >&2
-		diff <(echo "$expected") <(echo "$actual") >&2 || true
-		exit 1
-	      fi
-	    '';
+            if [ "$actual" != "$expectedTree" ]; then
+              echo "Tree mismatch:" >&2
+              diff <(echo "$expected") <(echo "$actual") >&2 || true
+              exit 1
+            fi
+          '';
       };
 
       # dev shell with editable install
