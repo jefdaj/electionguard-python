@@ -81,21 +81,21 @@
         dockerImage = pkgs.dockerTools.buildLayeredImage {
           name = "electionguard";
           tag = "1.4.0-py313.nix";
-          config.Labels = {
-            "org.opencontainers.image.version" = "1.4.0+py313.nix";
-            "org.opencontainers.image.revision" = "${self.rev or self.dirtyRev or "dirty"}";
-            "org.opencontainers.image.source"   = "https://github.com/jefdaj/electionguard-python";
-            "org.opencontainers.image.base.name" = "scratch"; # pure Nix
-            "org.opencontainers.image.description" = "electionguard-python with Nix + uv tooling";
-            "python.version" = "3.13";
-            "build.method" = "nix";
-            "upstream.source"   = "https://github.com/Election-Tech-Initiative/electionguard-python";
-            "upstream.revision" = "bc3fcb7da9d81a922b2a177cc7835b98e93497a3";
-          };
           contents = [ appEnv ]; # TODO also egui?
           config = {
             Entrypoint = [ "${appEnv}/bin/eg" ];
-            User = "1000:1000"; # TODO is this OK instead of fakeRootCommands?
+            User = "1000:1000"; # TODO named eg user?
+            Labels = {
+              "org.opencontainers.image.version" = "1.4.0+py313.nix";
+              "org.opencontainers.image.revision" = "${self.rev or self.dirtyRev or "dirty"}";
+              "org.opencontainers.image.source"   = "https://github.com/jefdaj/electionguard-python";
+              "org.opencontainers.image.base.name" = "scratch"; # pure Nix
+              "org.opencontainers.image.description" = "electionguard-python with Nix + uv tooling";
+              "python.version" = "3.13";
+              "build.method" = "nix";
+              "upstream.source"   = "https://github.com/Election-Tech-Initiative/electionguard-python";
+              "upstream.revision" = "bc3fcb7da9d81a922b2a177cc7835b98e93497a3";
+            };
           };
         };
 
