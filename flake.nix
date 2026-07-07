@@ -67,10 +67,12 @@
               overlay
               pyprojectOverrides
             ]);
+
+        appEnv = pythonSet.mkVirtualEnv "electionguard-env" workspace.deps.default;
+
     in
     rec {
-      packages.${system}.default =
-        pythonSet.mkVirtualEnv "electionguard-env" workspace.deps.default;
+      packages.${system}.default = appEnv;
 
       # dev shell with editable install
       devShells.${system}.default =
