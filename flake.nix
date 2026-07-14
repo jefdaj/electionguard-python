@@ -68,7 +68,7 @@
               pyprojectOverrides
             ]);
 
-        appEnv = pythonSet.mkVirtualEnv "electionguard-env" workspace.deps.default;
+        appEnv = pythonSet.mkVirtualEnv "electionguard" workspace.deps.default;
 
     in
     rec {
@@ -129,7 +129,7 @@
             root = "$REPO_ROOT";
           };
           editablePythonSet = pythonSet.overrideScope editableOverlay;
-          venv = editablePythonSet.mkVirtualEnv "electionguard-dev-env"
+          venv = editablePythonSet.mkVirtualEnv "electionguard"
             workspace.deps.all;
         in
         pkgs.mkShell {
