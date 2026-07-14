@@ -73,6 +73,13 @@
     in
     rec {
 
+      # This is for composing with other uv2nix environments.
+      # You add it to the next project's pythonSet override list.
+      # inherit pyprojectOverrides;
+      lib = {
+        inherit overlay;
+      };
+
       packages.${system} = {
 
         # TODO is there a cleaner variant to make the main package without all the misc bits?
