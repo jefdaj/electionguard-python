@@ -77,7 +77,7 @@
       # You add it to the next project's pythonSet override list.
       # inherit pyprojectOverrides;
       lib = {
-        inherit overlay;
+        inherit overlay pyprojectOverrides;
       };
 
       packages.${system} = {
